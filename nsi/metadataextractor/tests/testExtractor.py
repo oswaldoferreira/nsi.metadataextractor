@@ -31,7 +31,7 @@ class TestPreparation(unittest.TestCase):
 		document = basename(self.doc_dir)
 		documents = listdir(dirname(self.doc_dir))
 		document |should| be_into (documents)
-	
+
 	def test_raw_text_convertion(self):
 		convertion_style = ""
 		page = self.xml_template_metadata['page']
@@ -55,17 +55,17 @@ class TestPreparation(unittest.TestCase):
 
 
 	def test_institution_corpus_is_a_list_of_institution_names_with_respective_prepositions(self):
-		self.preparator.parse_corpus('institution') |should| equal_to([['', 'fluminense'], ['', 'catarinense'], 
-			['', 'baiano'], ['', 'goiano'], ['de ', 'tocantins'], ['do ', 'mato grosso'], ['do ', 'par\xc3\xa1'], 
-			['da ', 'para\xc3\xadba'], ['de ', 'sergipe'], ['do ', 'cear\xc3\xa1'], ['de ', 'roraima'], ['de ', 'alagoas'], 
-			['de ', 'santa catarina'], ['do ', 'sul de minas'], ['do ', 'sul de minas gerais'], 
-			['de ', 's\xc3\xa3o paulo'], ['do ', 'tri\xc3\xa2ngulo mineiro'], ['de ', 'minas gerais'], 
-			['do ', 'sert\xc3\xa3o pernambucano'], ['do ', 'mato grosso do sul'], ['da ', 'bahia'], 
-			['de ', 'rondonia'], ['do ', 'rio grande do sul'], ['do ', 'rio grande do norte'], ['de ', 'bras\xc3\xadlia'], 
-			['do ', 'norte de minas'], ['do ', 'piau\xc3\xad'], ['de ', 'amazonas'], ['do ', 'paran\xc3\xa1'], 
-			['de ', 'amap\xc3\xa1'], ['do ', 'acre'], ['de ', 'maranh\xc3\xa3o'], ['do ', 'rio de janeiro'], 
-			['de ', 'pernambuco'], ['da ', 'bahia'], ['do ', 'esp\xc3\xadrito santo'], ['do ', 'sudeste de minas gerais'], 
-			['de ', 'goi\xc3\xa1s'], ['de ', 'farroupilha'], ['de ', 'goi\xc3\xa1s']])
+		self.preparator.parse_corpus('institution') |should| equal_to([['', 'fluminense'], ['', 'catarinense'],
+			['', 'baiano'], ['', 'goiano'], ['de ', 'tocantins'], ['do ', 'mato grosso'], ['do ', 'par\xc3\xa1'],
+			['da ', 'para\xc3\xadba'], ['de ', 'sergipe'], ['do ', 'cear\xc3\xa1'], ['de ', 'roraima'], ['de ', 'alagoas'],
+			['de ', 'santa catarina'], ['do ', 'sul de minas'], ['do ', 'sul de minas gerais'],
+			['de ', 's\xc3\xa3o paulo'], ['do ', 'tri\xc3\xa2ngulo mineiro'], ['de ', 'minas gerais'],
+			['do ', 'sert\xc3\xa3o pernambucano'], ['do ', 'mato grosso do sul'], ['da ', 'bahia'],
+			['de ', 'rondonia'], ['do ', 'rio grande do sul'], ['do ', 'rio grande do norte'], ['de ', 'bras\xc3\xadlia'],
+			['do ', 'norte de minas'], ['do ', 'piau\xc3\xad'], ['de ', 'amazonas'], ['do ', 'paran\xc3\xa1'],
+			['de ', 'amap\xc3\xa1'], ['do ', 'acre'], ['de ', 'maranh\xc3\xa3o'], ['do ', 'rio de janeiro'],
+			['de ', 'pernambuco'], ['da ', 'bahia'], ['do ', 'esp\xc3\xadrito santo'], ['do ', 'sudeste de minas gerais'],
+			['de ', 'goi\xc3\xa1s'], ['de ', 'farroupilha'], ['de ', 'goi\xc3\xa1s'], ['de ', 'campinas']])
 
 
 class TestTccExtractor(unittest.TestCase):
@@ -87,12 +87,12 @@ class TestTccExtractor(unittest.TestCase):
 
 	def test_tcc_document_has_title_type_metadata(self):
 		self.extractor._title_metadata() |should_not| equal_to('')
-		self.preparator.remove_converted_document()		
+		self.preparator.remove_converted_document()
 
  	def test_tcc_document_has_a_confirmed_by_corpus_institution_metadata(self):
  		self.extractor._institution_metadata() |should_not| equal_to('Instituto Federal de Educação Ciência e Tecnologia ')
  		self.preparator.remove_converted_document()
- 	
+
  	def test_tcc_document_has_a_confirmed_by_corpus_campus_metadata(self):
  		self.extractor._campus_metadata() |should_not| equal_to('')
  		self.preparator.remove_converted_document()
@@ -146,4 +146,4 @@ class TestPeriodicExtractor(unittest.TestCase):
  		self.extractor._abstract_metadata |should_not| equal_to('')
 
 if __name__ == '__main__':
-	unittest.main()		
+	unittest.main()

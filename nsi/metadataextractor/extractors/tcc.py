@@ -40,34 +40,31 @@ class TccExtractor(object):
         return self.authors
 
     def _title_start_point(self):
-        self._title_doc = []
-        for line in self._linetokenized_onepage_raw_doc:
-            self._title_doc.append(line.decode('utf-8').lower().encode('utf-8'))
+        last_author_index = 0
         authors = self._author_metadata()
+
         if authors:
-            last_author_index = self._title_doc.index(authors[-1].lower() + self.linebreak)
-        nextline = last_author_index + 1
-        ## Verify line after last author
-        if self._title_doc[nextline] == self.linebreak: 
-            title_start_point = nextline + 1
-        else: title_start_point = last_author_index
-        return title_start_point
+            last_author_index = self._linetokenized_onepage_doc.index(authors[-1].lower())
+
+        return last_author_index + 1
 
     def _title_metadata(self):
-        self.title = ''
         title_start_point = self._title_start_point()
+        title_end_point = 0
+        page_lines_len = len(self._linetokenized_onepage_doc)
+
         breakers = self._template_metadata['title_breaker']
-        for title_index in range(title_start_point, len(self._title_doc)):
-            line_mod = self._title_doc[title_index].split()
-            has_breaker = bool(set(line_mod).intersection(breakers))
-            if not has_breaker:
-                self.title += self._title_doc[title_index].replace(self.linebreak, ' ')
-            else: break
-        self.title = self.title.strip().capitalize()
-        return self.title
+
+        for title_index in range(title_start_point, page_lines_len):
+            if (self._linetokenized_onepage_doc[title_index] in breakers) or title_index == page_lines_len - 1:
+                title_end_point = title_index
+                break
+
+        return self._linetokenized_onepage_doc[title_start_point:title_end_point]
+
 
     def _institution_metadata(self):
-        self.institution = 'Instituto Federal de Educação Ciência e Tecnologia '
+        self.institution = u"Instituto Federal de Educação Ciência e Tecnologia "
         institution_validator = set(self._template_metadata['institution_validator'])
         has_institution = bool(institution_validator.intersection(self._wordtokenized_onepage_doc))
         if has_institution:
@@ -83,6 +80,7 @@ class TccExtractor(object):
         self.campus = ''
         campus_validator = set(self._template_metadata['campus_validator'])
         has_campus = bool(campus_validator.intersection(self._wordtokenized_onepage_doc))
+
         if has_campus:
             self.campus_corpus = self._preparator.parse_corpus('campus')
             for campus in self.campus_corpus:
@@ -91,11 +89,14 @@ class TccExtractor(object):
                     self.campus = campus.title()
                     break
         return self.campus
-    
+
     def _abstract_metadata(self):
         regex = re.compile(r'resumo:* (.*?) (palavr(a|as)(.|\s)chav(e|es).|abstract)')
-        self.abstract = regex.search(self._clean_variouspages_doc).group(1).strip().capitalize()
-        return self.abstract
+        abstract_match = regex.search(self._clean_variouspages_doc)
+        if abstract_match:
+            return abstract_match.group(1).strip().capitalize()
+        else:
+            return ''
 
     def _grade_metadata(self):
         self.grade = ''

@@ -12,7 +12,7 @@ ROOT = abspath(dirname(__file__))
 CORPUS_PATH = join(ROOT, 'corpus')
 
 class Preparator(object):
-    
+
     def __init__(self, doc_dir):
         self.doc_dir, self.doc_ext = splitext(doc_dir)
         self.doc_name = basename(self.doc_dir)
@@ -23,7 +23,7 @@ class Preparator(object):
             system("pdftotext %s -enc UTF-8 -f %i -l %i %s.pdf %s.txt"
                 %(convertion_style, page1, page2, self.doc_dir, self.doc_dir))
         raw_text = PlaintextCorpusReader(dirname(self.doc_dir), self.temp_text_doc).raw()
-        encoded_lowertext = raw_text.decode('utf-8').lower().encode('utf-8')
+        encoded_lowertext = raw_text.encode('utf-8').lower()
         self.raw_text = re.sub(r'[0-9]', '', encoded_lowertext)
         return self.raw_text
 

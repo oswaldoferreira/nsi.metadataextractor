@@ -38,3 +38,5 @@ do ,Sudeste de Minas Gerais
 de ,Goiás
 de ,Farroupilha
 de ,Goiás
+de ,Campinas
+campinas
